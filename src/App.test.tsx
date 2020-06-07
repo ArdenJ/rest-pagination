@@ -8,6 +8,12 @@ import { App } from './App'
 describe('When loading the app', () => {
   test('it renders without crashing', () => {
     const { getByTestId } = render(<App />)
-    expect(getByTestId('app')).toBeInTheDocument()
+    const app = getByTestId(/app/i)
+    expect(app).toBeInTheDocument()
+  })
+  test('it contains a Login component', () => {
+    const { getByTestId } = render(<App />)
+    const login = getByTestId(/login/i)
+    expect(login).toBeInTheDocument()
   })
 })
