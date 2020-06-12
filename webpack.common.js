@@ -1,19 +1,18 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  target: 'web',
-  devtool: 'inline-source-map',
-  entry: './src/index',
-  output: {
-    path: path.join(__dirname, '/dist'),
-    filename: 'bundle.js',
+  entry: {
+    app: './src/index.js',
   },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-  },
-
+  // plugins: [
+  //   // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
+  //   new CleanWebpackPlugin(),
+  //   new HtmlWebpackPlugin({
+  //     title: 'Production',
+  //   }),
+  // ],
   module: {
     rules: [
       {
@@ -59,9 +58,8 @@ module.exports = {
       template: './src/index.html',
     }),
   ],
-  devServer: {
-    historyApiFallback: true,
-    contentBase: './dist',
-    hot: true,
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
 }
