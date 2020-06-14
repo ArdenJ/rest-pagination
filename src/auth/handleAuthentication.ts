@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 // TODO: handle authentication w/ simple backend server (probably a redis cache):
 // https://medium.com/@benjamin.botto/secure-access-token-storage-with-single-page-applications-part-2-921fce24e1b5
 
@@ -30,14 +31,18 @@ export const handleLogin = async (url: string, email:string, password:string): P
 }
 
 export const checkLoginStatus = (reqStatus: 'LOGGED_IN' | 'LOGGED_OUT') => {
-  if ((reqStatus === 'LOGGED_IN') && (localStorage.key(0) !== 'token' || !undefined)) {
-    throw new Error('⚠️ you must be logged in to continue')
+  switch (reqStatus) {
+    case 'LOGGED_IN':
+      return (localStorage.getItem('token') !== null)
+    case 'LOGGED_OUT':
+      return (localStorage.getItem('token') === null)
+    default:
+      throw new Error('unhandled action')
   }
-  if ((reqStatus === 'LOGGED_OUT') && localStorage.key(0) === 'token') throw new Error('⚠️ you are already logged in')
 }
 
 const setLocalStorage = (token: any) => {
-  if (localStorage.key(0) === 'token') console.log('you are already logged in')
+  if (localStorage.getItem('token') === null) console.log('you are already logged in')
   localStorage.setItem('token', token)
   console.log('token set')
 }
