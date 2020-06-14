@@ -1,9 +1,11 @@
 import React from 'react'
-import { Link, Route, useHistory } from 'react-router-dom'
+import { Link, Route, useHistory, Redirect } from 'react-router-dom'
 
-import { ENDPOINT, STUB } from './config'
+import { ENDPOINT } from './config'
 
 import { Login } from './components/Login/Login'
+import { checkLoginStatus } from './auth/handleAuthentication'
+import { Dashboard } from './components/Dashboard/Dashboard'
 
 export const App = () => {
   const history = useHistory()
@@ -22,9 +24,23 @@ export const App = () => {
         <h1>yo go log in</h1>
       </Route>
       <Route exact path='/login'>
-        <Login url={ENDPOINT} handleRedirect={handleRedirect}/>
+        {
+          checkLoginStatus('LOGGED_OUT')
+            ? <Login url={ENDPOINT} handleRedirect={handleRedirect}/>
+            : <Redirect to='/dashboard' />
+        }
       </Route>
-      <Route exact path='/dashboard'>beep bop</Route>
+      <Route exact path='/dashboard'>
+        {
+          checkLoginStatus('LOGGED_IN')
+            ? (
+              <>
+                <Dashboard url={ENDPOINT} handleRedirect={handleRedirect}/>
+              </>
+            )
+            : <Redirect to='/login'/>
+        }
+      </Route>
     </div>
   )
 }

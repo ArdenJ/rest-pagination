@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { handleLogin } from '../../auth/handleAuthentication'
-import { Route, Redirect } from 'react-router-dom'
 
 export const Login = ({ url, handleRedirect }:{url: string; handleRedirect: any}) => {
   const [email, setEmail] = useState('')
@@ -24,9 +23,9 @@ export const Login = ({ url, handleRedirect }:{url: string; handleRedirect: any}
           if (result === 'success') handleRedirect('dashboard')
         }
       }>
-        <input type='text' placeholder='email' onChange={(e) => { setEmail(e.target.value) }}/>
+        <input type='text' placeholder='email' autoComplete='email' onChange={(e) => { setEmail(e.target.value) }}/>
         {/* TODO: sanitise! */}
-        <input type='password' placeholder='password' onChange={(e) => { setPassword(e.target.value) }}/>
+        <input type='password' placeholder='password' autoComplete='current-password' onChange={(e) => { setPassword(e.target.value) }}/>
         <input data-testid='submit' type='submit'/>
       </form>
       {email}

@@ -75,19 +75,17 @@ describe('when a user enters their email, and password', () => {
   })
 })
 
-// FIXME: These are still failing (correctly is a false pass)
 describe('When a user submits their credentials', () => {
   afterEach(cleanup)
-  test('correctly', async () => {
+  test('correctly', () => {
     const { form, email, password, submit } = setup()
     fireEvent.change(email, { target: { value: 'beep' } })
     fireEvent.change(password, { target: { value: 'hunter2' } })
     fireEvent.click(submit)
     waitFor(() => expect(form).toHaveTextContent(/loading.../))
-    // waitFor(() => expect(form).toHaveTextContent(/success/))
   })
 
-  test('incorrectly', async () => {
+  test('incorrectly', () => {
     server.use(
       rest.get('/login', (req, res, ctx) => {
         return res(ctx.json({ status: 401 }))
