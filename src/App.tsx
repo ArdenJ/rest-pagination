@@ -11,9 +11,10 @@ export const App = () => {
   const history = useHistory()
 
   const handleRedirect = (route: string) => {
-    history.push(`/${route}`)
+    return history.push(`/${route}`)
   }
 
+  console.log('check status: ', checkLoginStatus('LOGGED_IN'))
   return (
     <div data-testid='app'>
       <div>
@@ -30,17 +31,26 @@ export const App = () => {
             : <Redirect to='/dashboard' />
         }
       </Route>
-      <Route exact path='/dashboard'>
-        {
-          checkLoginStatus('LOGGED_IN')
-            ? (
-              <>
-                <Dashboard url={ENDPOINT} handleRedirect={handleRedirect}/>
-              </>
-            )
-            : <Redirect to='/login'/>
-        }
-      </Route>
+      <PrivateRoute path='/dashboard'>
+        <Dashboard url={ENDPOINT}/>
+      </PrivateRoute>
     </div>
+  )
+}
+
+const PrivateRoute = ({ children, path }:{children: JSX.Element, path: string}) => {
+  return (
+    <Route exact path={path}
+      render={({ location }) =>
+        checkLoginStatus('LOGGED_IN') ? (
+          children
+        ) : (
+          <Redirect to={{
+            pathname: '/login',
+            state: { from: location }
+          }} />
+        )
+      }
+    />
   )
 }
