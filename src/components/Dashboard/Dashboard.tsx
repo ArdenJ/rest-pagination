@@ -25,16 +25,24 @@ export const Dashboard = ({ url }:{url: string }) => {
     <div data-testid='dashboard'>
       <h1>{'hey, ...you'}</h1>
       {
-        !apps?.error ? apps.length > 0 ? apps.map((i: any, index: number) => <AppItem key={index} url={url} appId={i.id} name={i.name} picture={i.logo} date={i.date} token={token()}/>) : 'loading...' : 'error fetching data'
+        !apps?.error ? apps?.length > 0 ? apps.map((i: any, index: number) => <AppItem key={index} url={url} appId={i.id} name={i.name} picture={i.logo} date={i.date} token={token()}/>) : 'loading...' : 'error fetching data'
       }
     </div>
   )
 }
 
+interface IAppItem {
+  url: string,
+  appId: string,
+  name: string,
+  picture: string,
+  date: string,
+  token: string,
+}
+
 // APP ITEM
-function AppItem({ url, appId, name, picture, date, token }:{
-  url: string, appId: string, name: string, picture: string, date: string, token: string}) {
-  // This might be better handled with a more complex state model and reducer...
+function AppItem({ url, appId, name, picture, date, token }:IAppItem) {
+  // TODO: This might be better handled with a more complex state model and reducer...
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
   const [list, setList] = useState<any>(null)
